@@ -5,15 +5,6 @@ pipeline {
         AWS_DEFAULT_REGION = 'us-west-2'  // Set your preferred AWS region
     }
 
-    stages {
-        stage('Checkout Code') {
-            steps {
-                script {
-                    checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: "${env.GITHUB_REPO}", credentialsId: "${env.GITHUB_CREDENTIALS_ID}"]]])
-                }
-            }
-        }
-
         stage('Validate CloudFormation Template') {
             steps {
                 script {
