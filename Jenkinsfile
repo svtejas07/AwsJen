@@ -5,7 +5,7 @@ pipeline {
         AWS_DEFAULT_REGION = 'us-west-2'  // Set your preferred AWS region
     }
 
-        stage('Validate CloudFormation Template') {
+    stage('Validate CloudFormation Template') {
             steps {
                 script {
                     sh 'aws cloudformation validate-template --template-body file://template.yaml'
@@ -13,7 +13,7 @@ pipeline {
             }
         }
 
-        stage('Deploy CloudFormation Stack') {
+    stage('Deploy CloudFormation Stack') {
             steps {
                 script {
                     sh '''
@@ -26,7 +26,7 @@ pipeline {
             }
         }
 
-        stage('Cleanup') {
+    stage('Cleanup') {
             steps {
                 script {
                     sh 'aws cloudformation delete-stack --stack-name my-stack'
