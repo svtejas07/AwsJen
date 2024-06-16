@@ -6,6 +6,14 @@ pipeline {
     }
 
     stages {
+        stage('Checkout Code') {
+            steps {
+                script {
+                    checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: "${env.GITHUB_REPO}", credentialsId: "${env.GITHUB_CREDENTIALS_ID}"]]])
+                }
+            }
+        }
+
         stage('Validate CloudFormation Template') {
             steps {
                 script {
@@ -26,14 +34,23 @@ pipeline {
                 }
             }
         }
+
+        stage('Cleanup') {
+            steps {
+                script {
+                    sh 'aws cloudformation delete-stack --stack-name my-stack'
+                }
+            }
+        }
     }
 
     post {
         success {
-            echo 'Stack deployed successfully.'
+            echo 'Pipeline completed successfully.'
         }
         failure {
-            echo 'Stack deployment failed.'
+            echo 'Pipeline failed.'
         }
     }
 }
+
